@@ -1,0 +1,28 @@
+
+.d3-component svg {
+  background: #ddd;
+  max-height: 300px;
+}
+
+@media all and (max-width: 1000px) {
+  .d3-component svg {
+    max-height: 200px;
+  }
+}
+
+
+.bar {
+  margin-left: 42vw;
+  background: transparent;
+  width: 25vw;
+  height: 10vh;
+  transition: 400ms linear all;
+}
+
+.rotate1 {
+  transform: rotate(90deg);
+}
+
+.rotate2 {
+  transform: rotate(210deg);
+}

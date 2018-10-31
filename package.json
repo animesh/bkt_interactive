@@ -1,0 +1,22 @@
+{
+  "name": "BKT_v2",
+  "version": "1.0.0",
+  "license": "MIT",
+  "idyll": {
+    "theme": "github",
+    "layout": "blog",
+    "css": "styles.css"
+  },
+  "dependencies": {
+    "d3": "^4.0.0",
+    "gl-mat4": "^1.2.0",
+    "hsv2rgb": "^1.1.0",
+    "idyll": "^3.0.0",
+    "idyll-d3-component": "^2.0.0",
+    "idyll-regl-component": "^1.0.6",
+    "regl": "^1.3.7"
+  },
+  "devDependencies": {
+    "gh-pages": "^0.12.0"
+  }
+}
