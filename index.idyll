@@ -44,19 +44,20 @@
   [/Step]
   [Step]
   [Aside]
-    [CustomD3Component className:"d3-component" state:init /]
+    [Particles size:`init/100` /]
   [/Aside]
   Before taking the actual evaluation (or after pre-test), the probability
   of a student mastering the skill is equal to the *init* probability:[br/]
   [Equation]
   p(L_1)^k = p(L_0)^k
   [/Equation][br/][br/]
-  Try assigning weights to the *init* variable:[br/]
+  Try assigning values to the *init* variable:[br/]
   [var name:"init" value:5 /]
   [Range min:0 max:95 value:init /]
   [Display value:init /]
   [br/]
-  Note that
+  Note that the greater the value (the more the learner knows), the faster
+  the gauge fills up (and the faster we reach full mastery)!
   [/Step]
 
   [Step]
@@ -101,7 +102,7 @@
   [Boolean value:other /] they have answered as least one question[br/]
   [Boolean value:mastered /] they have achieved at least 95% mastery[br/]
   [Boolean value:other /] they have a streak of 10 correct answers[br/]
-  Skill k is [Display value:`mastered ? "mastered!" : "unmastered"  `/]
+  The skill is [Display value:`mastered ? "mastered!" : "unmastered"  `/]
 
   [Conditional if:` mastered `]
   Congrats on finishing the explainable![br/] Your access code is 66666.
