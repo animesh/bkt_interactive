@@ -1,109 +1,111 @@
 [meta title:"Bayesian Knowledge Tracing" description:"Short description of your project" /]
 
-[Header
-  title:"Bayesian Knowledge Tracing"
-  subtitle:"an explorable explainable"
-  author:"Tongyu Zhou, Haoyu Sheng, Iris Howley"
-  authorLink:"https://github.com/eutopi" /]
-
 [Aside]
-
-  [CustomD3Component className:"d3-component" state:init /]
-  [button onClick:`init++`]
-    Click Me.
-  [/button]
-
-  [img
-    src:'static/images/fullbeakers.svg'
-    style:`{width: '800px', display: 'block',  margin: '100px auto'}`
-    /]
-
+[CustomD3Component className:"d3-component" state:init /]
+[Button onClick:`init++`]Click Me![/Button]
 [/Aside]
+  # Bayesian Knowledge Tracing
+  *an explorable explainable*
+  [br/]
+  by Tongyu Zhou, Haoyu Sheng, Iris Howley
+  [br/][br/][br/]
+  Bayesian knowledge tracing (BKT) is an AI algorithm
+  used in intelligent tutoring systems to model a learner's
+  mastery of the skill being taught.
 
-Bayesian knowledge tracing (BKT) is an AI algorithm
-used in intelligent tutoring systems to model a learner's
-mastery of the skill being taught.
-
-Before taking the actual evaluation (or after pre-test), the probability
-of a student mastering the skill is equal to the *init* probability
-
-[Equation]
-p(L_1)^k = p(L_0)^k
-[/Equation]
-
-Try assigning values and weights to the *init* variable:
-
-[var name:"init" value:5 /]
-
-[Range min:0 max:95 value:init /]
-[Display value:init /]
-
-And here is a custom component:
-
-[CustomComponent /]
-
-[br/][br/]
-
-During evaluation, the learner answers a series of questions.
-Toggle the answers to see what happens when they are correct/incorrect![br/]
-
-[var name:"q1" value:"click me!" /]
-[Select value:q1 options:`["correct", "incorrect"]`  /]
-[var name:"q2" value:"click me!" /]
-[Select value:selectVal options:`["correct", "incorrect"]`  /]
-[var name:"q3" value:"click me!" /]
-[Select value:q3 options:`["correct", "incorrect"]`  /]
-[var name:"q4" value:"click me!" /]
-[Select value:q4 options:`["correct", "incorrect"]`  /]
-[var name:"q5" value:"click me!" /]
-[Select value:q5 options:`["correct", "incorrect"]`  /]
-
-
-[br/][br/]
-[var name:"toggleEquation" value:false /]
-
-[Button onClick:` toggleEquation = ~toggleEquation `]hide/show equations[/Button]
-
-[Conditional if:` toggleEquation `]
-
-  [Equation]
-  p(L_{t+1}|obs=correct)^k = \frac{p(L_t)^k \cdot (1-p(S)^k)}{p(L_t)^k \cdot (1-p(S)^k) + (1-p(L_t)^k) \cdot p(G)^k}
-  [/Equation]
-
-  [Equation]
-  p(L_{t+1}|obs=wrong)^k = \frac{p(L_t)^k \cdot p(S)^k}{p(L_t)^k \cdot p(S)^k + (1-p(L_t)^k) \cdot (1-p(G)^k)}
-  [/Equation]
-[/Conditional]
-
-
-[var name:"barStep" value:0 /]
-[Scroller fullWidth:true currentStep:barStep]
+[var name:"scrollerIndex" value:1 /]
+[Scroller currentStep:scrollerIndex]
   [Graphic]
-    [img src:"static/images/hourglass.svg"
-        style:`{height: '100px'}`
-        className:`barStep === 0 ? "bar" :
-                "bar rotate" + barStep `/]
+       [img
+          src:`"static/images/" + scrollerIndex + ".svg"`
+          style:`{width: '700px'}`
+        /]
   [/Graphic]
 
   [Step]
-  wefewfewfw
+  Let us first consider this algorithm (BKT) in the context of an
+  "alchemy" metaphor. Think of the large beaker as representative of
+  the overall mastery of the student for the one skill of interest.
+  The test tubes are representative of the factors that go into
+  calculating mastery.
+  [/Step]
+
+  [Step] These factors are called *parameters*. BKT uses a total of 4
+  different parameters. From left to right, they are:[br/]
+  1) **init** : probability of learner knowing the skill beforehand [br/]
+  2) **transit** : probability of learner understanding skill after an opportunity to apply it[br/]
+  3) **slip** : probability of learner making a mistake when applying a known skill[br/]
+  4) **guess** : probability of learner has a lucky guess[br/]
   [/Step]
 
   [Step]
-  wefewfwefwef
+  The weights of these parameters are determined by the person applying
+  the algorithm.
+  [/Step]
+  [Step]
+  [Aside]
+    [CustomD3Component className:"d3-component" state:init /]
+  [/Aside]
+  Before taking the actual evaluation (or after pre-test), the probability
+  of a student mastering the skill is equal to the *init* probability:[br/]
+  [Equation]
+  p(L_1)^k = p(L_0)^k
+  [/Equation][br/][br/]
+  Try assigning weights to the *init* variable:[br/]
+  [var name:"init" value:5 /]
+  [Range min:0 max:95 value:init /]
+  [Display value:init /]
+  [br/]
+  Note that
   [/Step]
 
   [Step]
-  jvhkvk
+  [Aside]
+  [Display value:q1 /][br/]
+  [Display value:q2 /][br/]
+  [Display value:q3 /][br/]
+  [Display value:q4 /][br/]
+  [Display value:q5 /][br/]
+  [/Aside]
+  During evaluation, the learner answers a series of questions.
+  Toggle the answers to see what happens when they are correct/incorrect![br/]
+  [var name:"q1" value:"correct" /]
+  [Select value:q1 options:`["correct", "incorrect"]`  /]
+  [var name:"q2" value:"correct" /]
+  [Select value:q2 options:`["correct", "incorrect"]`  /]
+  [var name:"q3" value:"correct" /]
+  [Select value:q3 options:`["correct", "incorrect"]`  /]
+  [var name:"q4" value:"correct" /]
+  [Select value:q4 options:`["correct", "incorrect"]`  /]
+  [var name:"q5" value:"correct" /]
+  [Select value:q5 options:`["correct", "incorrect"]`  /]
+  [br/][br/]
+  [var name:"toggleEquation" value:false /]
+  [Button onClick:` toggleEquation = ~toggleEquation `]hide/show equations[/Button]
+  [Conditional if:` toggleEquation `]
+    [Equation]
+    p(L_{t+1}|obs=correct)^k = \frac{p(L_t)^k \cdot (1-p(S)^k)}{p(L_t)^k \cdot (1-p(S)^k) + (1-p(L_t)^k) \cdot p(G)^k}
+    [/Equation]
+
+    [Equation]
+    p(L_{t+1}|obs=wrong)^k = \frac{p(L_t)^k \cdot p(S)^k}{p(L_t)^k \cdot p(S)^k + (1-p(L_t)^k) \cdot (1-p(G)^k)}
+    [/Equation]
+  [/Conditional]
   [/Step]
-  The learner continues to answer questions until...
+
+
+  [Step] The learner continues to answer questions...   [/Step]
+  [Step] Until?[br/][br/]
   [var name:"mastered" value:false /]
   [var name:"other" value:false /]
-
-
   [Boolean value:other /] they have answered as least one question[br/]
   [Boolean value:mastered /] they have achieved at least 95% mastery[br/]
   [Boolean value:other /] they have a streak of 10 correct answers[br/]
-
   Skill k is [Display value:`mastered ? "mastered!" : "unmastered"  `/]
+
+  [Conditional if:` mastered `]
+  Congrats on finishing the explainable![br/] Your access code is 66666.
+  [/Conditional]
+  [/Step]
+
 [/Scroller]
