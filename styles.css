@@ -1,9 +1,17 @@
 body {
   margin: 0;
+  background-color: #a8af9e;
 }
 
+.idyll-root {
+  padding-top: 0;
+}
 
-
+.fixed {
+  width: 100%;
+  left: 200px;
+  padding: 200px;
+}
 .d3-component svg {
   background: #ddd;
   max-height: 300px;
