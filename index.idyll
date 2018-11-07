@@ -1,7 +1,7 @@
 [meta title:"Bayesian Knowledge Tracing" description:"Short description of your project" /]
 
-[Fixed]
-[Graphic fullWidth:true]
+[Fixed fullWidth:true]
+[Graphic]
      [img
         src:`"static/images/" + state + ".svg"`
       /]
@@ -10,6 +10,11 @@
 
 [var name:"state" value:"static" /]
 [Scroller currentState:state]
+  [Header
+  title:"The Title of my Article"
+  subtitle:"The subtitle of my article"
+  author:"Matthew Conlen"
+  /]
   ###Bayesian Knowledge Tracing
   *an explorable explainable*
   [br/]
@@ -29,7 +34,7 @@
   These factors are called *parameters*. BKT uses a total of 4
   different parameters. From left to right, they are:[br/]
   1) **init** : probability of learner knowing the skill beforehand [br/]
-  2) **transit** : probability of learner learning the skill during application[br/]
+  2) **transit** : probability of learner learning the skill after application[br/]
   3) **slip** : probability of learner messing up when using a known skill[br/]
   4) **guess** : probability of learner has a lucky guess[br/]
   [/Step]
@@ -37,11 +42,10 @@
   [Step state:"cali"]
   The weights these parameters carry in the equation are determined by
   the person applying the algorithm.[br/][br/]
-  [var name:"p_i" value:0.25 /]
-  [var name:'p_t' value:0.25 /]
-  [var name:"p_t" value:0.25 /]
-  [var name:"p_s" value:0.25 /]
-  [var name:"p_g" value:0.25 /]
+  [var name:"p_i" value:0.30 /]
+  [var name:'p_t' value:0.30 /]
+  [var name:"p_s" value:0.10 /]
+  [var name:"p_g" value:0.30 /]
   [derived name:'p_i_range' value:`1 - p_t - p_s - p_g` /]
   [derived name:'p_t_range' value:`1 - p_i - p_s - p_g` /]
   Init: [Dynamic value:p_i min:0 max: p_i_range step:0.01/]
@@ -49,6 +53,15 @@
   Slip: [Dynamic value:p_s min:0 max: 0.1 step:0.01/]
   Guess: [Dynamic value:p_g min:0 max: 0.3 step:0.01/][br/]
   Total probability: [Display value:`p_i+p_t+p_s+p_g` /][br/]
+  [var name:"ssr_toggle" value:false /]
+  [ReactMinimalPieChart
+  slices:`[{
+    color: '#7b3af5',
+    value: 0.1,
+  }, {
+    color: '#EAE7D6',
+    value: 0.9, },
+  ]` /]
   [Button onClick:`ssr_toggle = !ssr_toggle`]
   Toggle formula
   [/Button]
@@ -82,20 +95,27 @@
   The algorithm relies on something called "conditional probability." That is,
   depending on whether a learner answers a current question correctly or incorrectly,
   the formulas we use to calculate their mastery for that state will be different![br/][br/]
-  [var name:"choice" value:"--" /]
-  [Select value:choice options:`[" ", "correct", "incorrect"]`  /]
-  [Conditional if:` choice=="correct" `]
+  [var name:"correctness_toggle" value:false /]
+  [Button onClick:`correctness_toggle = !correctness_toggle`]
+  [Conditional if:` correctness_toggle==false `]
+    Incorrect
+  [/Conditional]
+  [Conditional if:` correctness_toggle==true `]
+    Correct
+  [/Conditional]
+  [/Button]
+  [Conditional if:` correctness_toggle==true `]
     [var name:"progress" value:"80%" /]
     [Equation]
     p(L_{t+1}|obs=correct)^k = \frac{p(L_t)^k \cdot (1-p(S)^k)}{p(L_t)^k \cdot (1-p(S)^k) + (1-p(L_t)^k) \cdot p(G)^k}
     [/Equation][br/]
     * animation to display large growth *
   [/Conditional]
-  [Conditional if:` choice=="incorrect" `]
+  [Conditional if:` correctness_toggle==false `]
     [Equation]
     p(L_{t+1}|obs=wrong)^k = \frac{p(L_t)^k \cdot p(S)^k}{p(L_t)^k \cdot p(S)^k + (1-p(L_t)^k) \cdot (1-p(G)^k)}
     [/Equation][br/]
-    * animation to display large growth *
+    * animation to display small growth *
   [/Conditional]
   [/Step]
 
@@ -103,21 +123,59 @@
   Continuing with the notion of "conditional probability," the mastery of a current
   state also depends on the mastery of a previous state. Try toggling the
   series of answers to see what happens when they are correct/incorrect.[br/][br/]
-  [var name:"q1" value:"correct" /]
-  [Select value:q1 options:`["correct", "incorrect"]`  /]
-  [var name:"q2" value:"correct" /]
-  [Select value:q2 options:`["correct", "incorrect"]`  /]
-  [var name:"q3" value:"correct" /]
-  [Select value:q3 options:`["correct", "incorrect"]`  /]
-  [var name:"q4" value:"correct" /]
-  [Select value:q4 options:`["correct", "incorrect"]`  /]
-  [var name:"q5" value:"correct" /]
-  [Select value:q5 options:`["correct", "incorrect"]`  /][br/]
-  [Display value:q1 /][br/]
-  [Display value:q2 /][br/]
-  [Display value:q3 /][br/]
-  [Display value:q4 /][br/]
-  [Display value:q5 /][br/]
+  [var name:"toggle1" value:1/]
+  [var name:"toggle2" value:1/]
+  [var name:"toggle3" value:1/]
+  [var name:"toggle4" value:1/]
+  [var name:"toggle5" value:1/]
+  [Button onClick:`toggle1 += 1`]
+    [Conditional if:` toggle1%2==1 `]
+      Correct
+    [/Conditional]
+    [Conditional if:` toggle1%2==0 `]
+      Incorrect
+    [/Conditional]
+  [/Button]
+  [Button onClick:`toggle2 += 1`]
+    [Conditional if:` toggle2%2==1 `]
+      Correct
+    [/Conditional]
+    [Conditional if:` toggle2%2==0 `]
+      Incorrect
+    [/Conditional]
+  [/Button]
+  [Button onClick:`toggle3 += 1`]
+    [Conditional if:` toggle3%2==1 `]
+      Correct
+    [/Conditional]
+    [Conditional if:` toggle3%2==0 `]
+      Incorrect
+    [/Conditional]
+  [/Button]
+  [Button onClick:`toggle4 += 1`]
+    [Conditional if:` toggle4%2==1 `]
+      Correct
+    [/Conditional]
+    [Conditional if:` toggle4%2==0 `]
+      Incorrect
+    [/Conditional]
+  [/Button]
+  [Button onClick:`toggle5 += 1`]
+    [Conditional if:` toggle5%2==1 `]
+      Correct
+    [/Conditional]
+    [Conditional if:` toggle5%2==0 `]
+      Incorrect
+    [/Conditional]
+  [/Button][br/][br/]
+  Mastery growth rate:
+  [Chart
+      type:`"line"`
+      data:`[0, 0.5 + toggle1%2 + toggle2%2 + toggle3%2 + toggle4%2 + toggle5%2]`
+      domain:`[0, 1]` range:`[0, 5]`
+      animate:`{ duration: 100 }` /]
+  *Note that even when a learner gets everything wrong, the mastery still
+  increases, albeit by a little bits*
   [/Step]
 
 
