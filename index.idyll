@@ -71,7 +71,7 @@
     [/Equation]
   [/Conditional]
   [br/]
-  *P(slip)* <= 0.1 and *P(guess)* <= 0.3 to avoid model degeneracy[br/]
+  *P(slip)* <= 0.1 and *P(guess)* <= 0.3 to make realistic predictions[br/]
   When fitting parameters, we choose combinations that give the best sum-of-squares residual
   [/Step]
 
@@ -79,7 +79,7 @@
   Before taking the actual evaluation (or after pre-test), the probability
   of a student mastering the skill is equal to the *init* probability:[br/]
   [Equation]
-  p(L_1)^k = p(L_0)^k
+  p(L_1) = p(L_0)
   [/Equation][br/][br/]
   [Particles size:`init/100` /]
   Try assigning values to the *init* variable:[br/]
