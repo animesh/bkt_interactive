@@ -48,18 +48,7 @@
   Transit: [Dynamic value:p_t min:0 max: p_t_range step:0.01/]
   Slip: [Dynamic value:p_s min:0 max: 0.1 step:0.01/]
   Guess: [Dynamic value:p_g min:0 max: 0.3 step:0.01/][br/]
-  Total probability: [Display value:`p_i+p_t+p_s+p_g` /][br/]
 
-  [var name:"ssr_toggle" value:false /]
-  [Button onClick:`ssr_toggle = !ssr_toggle`]
-  Toggle formula
-  [/Button][br/]
-  [Conditional if:` ssr_toggle==true `]
-    [Equation]
-    RSS = \sum^n_{i=1} (O_i - L_i)^2
-    [/Equation]
-  [/Conditional]
-  [br/]
   *P(slip)* <= 0.1 and *P(guess)* <= 0.3 to make realistic predictions[br/]
   When fitting parameters, we choose combinations that give the best sum-of-squares residual
   [/Step]
@@ -96,13 +85,13 @@
   [Conditional if:` correctness_toggle==true `]
     [var name:"progress" value:"80%" /]
     [Equation]
-    p(L_{t+1}|obs=correct)^k = \frac{p(L_t)^k \cdot (1-p(S)^k)}{p(L_t)^k \cdot (1-p(S)^k) + (1-p(L_t)^k) \cdot p(G)^k}
+    p(L_{t+1}|obs=correct) = \frac{p(L_t) \cdot (1-p(S))}{p(L_t) \cdot (1-p(S)) + (1-p(L_t)) \cdot p(G)}
     [/Equation][br/]
     * animation to display large growth *
   [/Conditional]
   [Conditional if:` correctness_toggle==false `]
     [Equation]
-    p(L_{t+1}|obs=wrong)^k = \frac{p(L_t)^k \cdot p(S)^k}{p(L_t)^k \cdot p(S)^k + (1-p(L_t)^k) \cdot (1-p(G)^k)}
+    p(L_{t+1}|obs=wrong) = \frac{p(L_t) \cdot p(S)}{p(L_t) \cdot p(S) + (1-p(L_t)) \cdot (1-p(G))}
     [/Equation][br/]
   [/Conditional]
   [/Step]
