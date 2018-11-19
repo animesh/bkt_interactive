@@ -10,11 +10,6 @@
 
 [var name:"state" value:"static" /]
 [Scroller currentState:state]
-  [Header
-  title:"The Title of my Article"
-  subtitle:"The subtitle of my article"
-  author:"Matthew Conlen"
-  /]
   ###Bayesian Knowledge Tracing
   *an explorable explainable*
   [br/]
@@ -48,30 +43,24 @@
   [var name:"p_g" value:0.30 /]
   [derived name:'p_i_range' value:`1 - p_t - p_s - p_g` /]
   [derived name:'p_t_range' value:`1 - p_i - p_s - p_g` /]
+  Slide the four values below to change the probability:[br/]
   Init: [Dynamic value:p_i min:0 max: p_i_range step:0.01/]
   Transit: [Dynamic value:p_t min:0 max: p_t_range step:0.01/]
   Slip: [Dynamic value:p_s min:0 max: 0.1 step:0.01/]
   Guess: [Dynamic value:p_g min:0 max: 0.3 step:0.01/][br/]
   Total probability: [Display value:`p_i+p_t+p_s+p_g` /][br/]
+
   [var name:"ssr_toggle" value:false /]
-  [ReactMinimalPieChart
-  slices:`[{
-    color: '#7b3af5',
-    value: 0.1,
-  }, {
-    color: '#EAE7D6',
-    value: 0.9, },
-  ]` /]
   [Button onClick:`ssr_toggle = !ssr_toggle`]
   Toggle formula
-  [/Button]
+  [/Button][br/]
   [Conditional if:` ssr_toggle==true `]
     [Equation]
     RSS = \sum^n_{i=1} (O_i - L_i)^2
     [/Equation]
   [/Conditional]
   [br/]
-  *P(slip)* <= 0.1 and *P(guess)* <= 0.3 to avoid model degeneracy[br/]
+  *P(slip)* <= 0.1 and *P(guess)* <= 0.3 to make realistic predictions[br/]
   When fitting parameters, we choose combinations that give the best sum-of-squares residual
   [/Step]
 
@@ -91,7 +80,7 @@
   the gauge fills up (and the faster we reach full mastery)!
   [/Step]
 
-  [Step state:"calculating"]
+  [Step state:"all_less"]
   The algorithm relies on something called "conditional probability." That is,
   depending on whether a learner answers a current question correctly or incorrectly,
   the formulas we use to calculate their mastery for that state will be different![br/][br/]
@@ -115,11 +104,10 @@
     [Equation]
     p(L_{t+1}|obs=wrong)^k = \frac{p(L_t)^k \cdot p(S)^k}{p(L_t)^k \cdot p(S)^k + (1-p(L_t)^k) \cdot (1-p(G)^k)}
     [/Equation][br/]
-    * animation to display small growth *
   [/Conditional]
   [/Step]
 
-  [Step state:"calculating"]
+  [Step state:"all"]
   Continuing with the notion of "conditional probability," the mastery of a current
   state also depends on the mastery of a previous state. Try toggling the
   series of answers to see what happens when they are correct/incorrect.[br/][br/]
@@ -168,18 +156,20 @@
       Incorrect
     [/Conditional]
   [/Button][br/][br/]
-  Mastery growth rate:
+  Mastery percentage growth rate:
   [Chart
-      type:`"line"`
-      data:`[0, 0.5 + toggle1%2 + toggle2%2 + toggle3%2 + toggle4%2 + toggle5%2]`
-      domain:`[0, 1]` range:`[0, 5]`
+      type:`"bar"`
+      data:`[0, 5 + 4*(toggle1%2 + toggle2%2 + toggle3%2 + toggle4%2 + toggle5%2)]`
+      domain:`[0.5, 1.5]` range:`[0, 30]`
       animate:`{ duration: 100 }` /]
+  x-axis: next x questions[br/]
+  y-axis: percentage increase[br/][br/]
   *Note that even when a learner gets everything wrong, the mastery still
   increases, albeit by a little bits*
   [/Step]
 
 
-  [Step state:"static"] The learner continues to answer questions...   [/Step]
+  [Step state:"all"] The learner continues to answer questions...   [/Step]
 
   [Step state:"end"] Until?[br/][br/]
   [var name:"mastered" value:false /]
