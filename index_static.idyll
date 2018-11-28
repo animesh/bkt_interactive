@@ -33,7 +33,10 @@
   1) **init** : probability of learner knowing the skill beforehand [br/]
   2) **transit** : probability of learner learning the skill after application[br/]
   3) **slip** : probability of learner messing up when using a known skill[br/]
-  4) **guess** : probability of learner has a lucky guess[br/]
+  4) **guess** : probability of learner has a lucky guess[br/][br/]
+  The probabilities of these parameters ultimately affect mastery, which is the
+  probability that a particular skill has been learned.
+  [/Step]
   [/Step]
 
     [Step state:"cali"]
@@ -53,7 +56,7 @@
   Before taking the actual evaluation (or after pre-test), the probability
   of a student mastering the skill is equal to the *init* probability:[br/]
   [img
-     src:`"static/images/eq1.png"`
+     src:`"static/images/eqa.svg"`
      width: "150px"
    /]
   [br/]
@@ -67,12 +70,12 @@
   the formulas we use to calculate their mastery for that state will be different![br/][br/]
   Correct answer: [br/]
   [img
-     src:`"static/images/eq2correct.png"`
+     src:`"static/images/eqb.svg"`
      width: "420px"
    /][br/]
    Incorrect answer: [br/]
    [img
-      src:`"static/images/eq2wrong.png"`
+      src:`"static/images/eqc.svg"`
       width: "420px"
     /]
   [/Step]
@@ -80,6 +83,10 @@
   [Step state:"all"]
   Continuing with the notion of "conditional probability," the mastery of a current
   state also depends on the mastery of a previous state. [br/]
+  [img
+     src:`"static/images/eqd.svg"`
+     width: "420px"
+   /][br/]
 
   This is a "Markov chain", so the mastery of the most recent state is both
   dependent on the previous immediate state (more significantly) and the
