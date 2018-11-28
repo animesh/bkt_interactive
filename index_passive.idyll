@@ -1,0 +1,102 @@
+[meta title:"Bayesian Knowledge Tracing" description:"Short description of your project" /]
+
+[Fixed fullWidth:true]
+[Graphic]
+     [img
+        src:`"static/images/" + state + ".svg"`
+      /]
+[/Graphic]
+[/Fixed]
+
+[var name:"state" value:"static" /]
+[Scroller currentState:state]
+  ###Bayesian Knowledge Tracing
+  *an explorable explainable*
+  [br/]
+  by Tongyu Zhou, Haoyu Sheng, Iris Howley
+
+  [Step state:"static"]
+  Bayesian knowledge tracing (BKT) is an AI algorithm
+  used in intelligent tutoring systems to model a learner's
+  mastery of the skill being taught. Let us first consider this algorithm
+  (BKT) in the context of an "alchemy" metaphor. Think of the large beaker
+  as representative of the overall mastery of the student for the one skill of interest.
+  The test tubes are representative of the factors that go into
+  calculating mastery.
+  [/Step]
+
+  [Step state:"static"]
+  These factors are called *parameters*. BKT uses a total of 4
+  different parameters. From left to right, they are:[br/]
+  1) **init** : probability of learner knowing the skill beforehand [br/]
+  2) **transit** : probability of learner learning the skill after application[br/]
+  3) **slip** : probability of learner messing up when using a known skill[br/]
+  4) **guess** : probability of learner has a lucky guess[br/]
+  [/Step]
+
+    [Step state:"cali"]
+    The weights these parameters carry in the equation are determined by
+    the person applying the algorithm.[br/][br/]
+    As we are dealing with probabilities, this person can set each parameter
+    value as anything from 0 to 1. While this is the theoretical setup,
+    these parameter values in practice are usually bounded by more
+    restrictive ranges. That is, a common model is to set *P(slip)* <= 0.1
+    and *P(guess)* <= 0.3 to make the mastery predictions more realistic. What this
+    does, mathematically, is to minimize the sum-of-squares residual:[br/]
+    [img
+       src:`"static/images/eq.png"`
+       width: "200px"
+     /]
+  [/Step]
+
+  [Step state:"initial"]
+  Before taking the actual evaluation (or after pre-test), the probability
+  of a student mastering the skill is equal to the *init* probability:[br/]
+  [img
+     src:`"static/images/eq1.png"`
+     width: "150px"
+   /]
+  [br/]
+  In other words, the greater the *init* value is, the higher the level of mastery
+  is before any questions are even answered.
+  [/Step]
+
+  [Step state:"all_less"]
+  The algorithm relies on something called "conditional probability." That is,
+  depending on whether a learner answers a current question correctly or incorrectly,
+  the formulas we use to calculate their mastery for that state will be different![br/][br/]
+  Correct answer: [br/]
+  [img
+     src:`"static/images/eq2correct.png"`
+     width: "420px"
+   /][br/]
+   Incorrect answer: [br/]
+   [img
+      src:`"static/images/eq2wrong.png"`
+      width: "420px"
+    /]
+  [/Step]
+
+  [Step state:"all"]
+  Continuing with the notion of "conditional probability," the mastery of a current
+  state also depends on the mastery of a previous state. This is a "Markov chain",
+  so the mastery of the most recent state is both dependent on the previous
+  immediate state (more significantly) and the first state (less significantly). Note
+  that this means even, when a learner gets everything wrong, the mastery still
+  increases, albeit by a little bit.
+  [/Step]
+
+
+  [Step state:"all"] The learner continues to answer questions...   [/Step]
+
+  [Step state:"end"] Until they have achieved at least 95% mastery. Note that
+  this is the only requirement--it does not matter how many questions they
+  have answered thus far or how many correct streaks they have. Now, the
+  skill is mastered!
+
+  Congrats on finishing the explainable![br/]
+  [link text:"Click here" url:"https://some.url" /] to continue on to the next step
+
+  [/Step]
+
+[/Scroller]

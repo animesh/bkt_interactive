@@ -1,0 +1,206 @@
+[meta title:"Bayesian Knowledge Tracing" description:"Short description of your project" /]
+
+[Fixed fullWidth:true]
+[Graphic]
+     [img
+        src:`"static/images/" + state + ".svg"`
+      /]
+[/Graphic]
+[/Fixed]
+
+[var name:"state" value:"static" /]
+[Scroller currentState:state]
+  ###Bayesian Knowledge Tracing
+  *an explorable explainable*
+  [br/]
+  by Tongyu Zhou, Haoyu Sheng, Iris Howley
+
+  [Step state:"static"]
+  Bayesian knowledge tracing (BKT) is an AI algorithm
+  used in intelligent tutoring systems to model a learner's
+  mastery of the skill being taught. Let us first consider this algorithm
+  (BKT) in the context of an "alchemy" metaphor. Think of the large beaker
+  as representative of the overall mastery of the student for the one skill of interest.
+  The test tubes are representative of the factors that go into
+  calculating mastery.
+  [/Step]
+
+  [Step state:"static"]
+  These factors are called *parameters*. BKT uses a total of 4
+  different parameters. From left to right, they are:[br/]
+  1) **init** : probability of learner knowing the skill beforehand [br/]
+  2) **transit** : probability of learner learning the skill after application[br/]
+  3) **slip** : probability of learner messing up when using a known skill[br/]
+  4) **guess** : probability of learner has a lucky guess[br/]
+  [/Step]
+
+  [Step state:"cali"]
+  The weights these parameters carry in the equation are determined by
+  the person applying the algorithm.[br/][br/]
+  [var name:"p_i" value:0.30 /]
+  [var name:'p_t' value:0.30 /]
+  [var name:"p_s" value:0.10 /]
+  [var name:"p_g" value:0.30 /]
+  [derived name:'p_i_range' value:`1 - p_t - p_s - p_g` /]
+  [derived name:'p_t_range' value:`1 - p_i - p_s - p_g` /]
+  Slide the four values below to change the probability:[br/]
+  Init: [Dynamic value:p_i min:0 max: p_i_range step:0.01/]
+  Transit: [Dynamic value:p_t min:0 max: p_t_range step:0.01/]
+  Slip: [Dynamic value:p_s min:0 max: 0.1 step:0.01/]
+  Guess: [Dynamic value:p_g min:0 max: 0.3 step:0.01/][br/]
+  Total probability: [Display value:`p_i+p_t+p_s+p_g` /][br/]
+
+  [var name:"ssr_toggle" value:false /]
+  [Button onClick:`ssr_toggle = !ssr_toggle`]
+  Toggle formula
+  [/Button][br/]
+  [Conditional if:` ssr_toggle==true `]
+         [img
+            src:`"static/images/eq.png"`
+            width: "200px"
+          /]
+    //[Equation]
+    //RSS = \sum^n_{i=1} (O_i - L_i)^2
+    //[/Equation]
+  [/Conditional]
+  [br/]
+  *P(slip)* <= 0.1 and *P(guess)* <= 0.3 to make realistic predictions[br/]
+  When fitting parameters, we choose combinations that give the best sum-of-squares residual
+  [/Step]
+
+  [Step state:"initial"]
+  Before taking the actual evaluation (or after pre-test), the probability
+  of a student mastering the skill is equal to the *init* probability:[br/]
+  [img
+     src:`"static/images/eq1.png"`
+     width: "150px"
+   /]
+  //[Equation]
+  //p(L_1)^k = p(L_0)^k
+  //[/Equation]
+  [br/][br/]
+  [Particles size:`init/100` /]
+  Try assigning values to the *init* variable:[br/]
+  [var name:"init" value:5 /]
+  [Range min:0 max:95 value:init /]
+  [Display value:init /]
+  [br/]
+  Note that the greater the value (the more the learner knows), the faster
+  the gauge fills up (and the faster we reach full mastery)!
+  [/Step]
+
+  [Step state:"all_less"]
+  The algorithm relies on something called "conditional probability." That is,
+  depending on whether a learner answers a current question correctly or incorrectly,
+  the formulas we use to calculate their mastery for that state will be different![br/][br/]
+  [var name:"correctness_toggle" value:false /]
+  [Button onClick:`correctness_toggle = !correctness_toggle`]
+  [Conditional if:` correctness_toggle==false `]
+    Incorrect
+  [/Conditional]
+  [Conditional if:` correctness_toggle==true `]
+    Correct
+  [/Conditional]
+  [/Button]
+  [Conditional if:` correctness_toggle==true `]
+    [var name:"progress" value:"80%" /]
+    [img
+       src:`"static/images/eq2correct.png"`
+       width: "420px"
+     /]
+    //[Equation]
+    //p(L_{t+1}|obs=correct)^k = \frac{p(L_t)^k \cdot (1-p(S)^k)}{p(L_t)^k \cdot (1-p(S)^k) + (1-p(L_t)^k) \cdot p(G)^k}
+    //[/Equation]
+    [br/]
+  [/Conditional]
+  [Conditional if:` correctness_toggle==false `]
+    [img
+       src:`"static/images/eq2wrong.png"`
+       width: "420px"
+     /]
+    //[Equation]
+    //p(L_{t+1}|obs=wrong)^k = \frac{p(L_t)^k \cdot p(S)^k}{p(L_t)^k \cdot p(S)^k + (1-p(L_t)^k) \cdot (1-p(G)^k)}
+    //[/Equation][br/]
+  [/Conditional]
+  [/Step]
+
+  [Step state:"all"]
+  Continuing with the notion of "conditional probability," the mastery of a current
+  state also depends on the mastery of a previous state. Try toggling the
+  series of answers to see what happens when they are correct/incorrect.[br/][br/]
+  [var name:"toggle1" value:1/]
+  [var name:"toggle2" value:1/]
+  [var name:"toggle3" value:1/]
+  [var name:"toggle4" value:1/]
+  [var name:"toggle5" value:1/]
+  [Button onClick:`toggle1 += 1`]
+    [Conditional if:` toggle1%2==1 `]
+      Correct
+    [/Conditional]
+    [Conditional if:` toggle1%2==0 `]
+      Incorrect
+    [/Conditional]
+  [/Button]
+  [Button onClick:`toggle2 += 1`]
+    [Conditional if:` toggle2%2==1 `]
+      Correct
+    [/Conditional]
+    [Conditional if:` toggle2%2==0 `]
+      Incorrect
+    [/Conditional]
+  [/Button]
+  [Button onClick:`toggle3 += 1`]
+    [Conditional if:` toggle3%2==1 `]
+      Correct
+    [/Conditional]
+    [Conditional if:` toggle3%2==0 `]
+      Incorrect
+    [/Conditional]
+  [/Button]
+  [Button onClick:`toggle4 += 1`]
+    [Conditional if:` toggle4%2==1 `]
+      Correct
+    [/Conditional]
+    [Conditional if:` toggle4%2==0 `]
+      Incorrect
+    [/Conditional]
+  [/Button]
+  [Button onClick:`toggle5 += 1`]
+    [Conditional if:` toggle5%2==1 `]
+      Correct
+    [/Conditional]
+    [Conditional if:` toggle5%2==0 `]
+      Incorrect
+    [/Conditional]
+  [/Button][br/][br/]
+  Mastery percentage growth rate:
+  [Chart
+      type:`"bar"`
+      data:`[0, 5 + 4*(toggle1%2 + toggle2%2 + toggle3%2 + toggle4%2 + toggle5%2)]`
+      domain:`[0.5, 1.5]` range:`[0, 30]`
+      animate:`{ duration: 100 }` /]
+  x-axis: next x questions[br/]
+  y-axis: percentage increase[br/][br/]
+  *Note that even when a learner gets everything wrong, the mastery still
+  increases, albeit by a little bit*
+  [/Step]
+
+
+  [Step state:"all"] The learner continues to answer questions...   [/Step]
+
+  [Step state:"end"] Until?[br/][br/]
+  [var name:"mastered" value:false /]
+  [var name:"other" value:false /]
+  [Boolean value:other /] they have answered as least one question[br/]
+  [Boolean value:mastered /] they have achieved at least 95% mastery[br/]
+  [Boolean value:other /] they have a streak of 10 correct answers[br/]
+  The skill is [Display value:`mastered ? "mastered!" : "unmastered"  `/]
+
+  [Conditional if:` mastered `]
+  Congrats on finishing the explainable![br/]
+  [link text:"Click here" url:"https://some.url" /] to continue on to the next step
+
+  [/Conditional]
+  [/Step]
+
+[/Scroller]
