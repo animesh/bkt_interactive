@@ -18,7 +18,9 @@
   [Step state:"static"]
   Bayesian knowledge tracing (BKT) is an AI algorithm
   used in intelligent tutoring systems to model a learner's
-  mastery of the skill being taught. Let us first consider this algorithm
+  mastery of the skill being taught. [br/]
+
+  Let us first consider this algorithm
   (BKT) in the context of an "alchemy" metaphor. Think of the large beaker
   as representative of the overall mastery of the student for the one skill of interest.
   The test tubes are representative of the factors that go into
@@ -40,13 +42,11 @@
     As we are dealing with probabilities, this person can set each parameter
     value as anything from 0 to 1. While this is the theoretical setup,
     these parameter values in practice are usually bounded by more
-    restrictive ranges. That is, a common model is to set *P(slip)* <= 0.1
+    restrictive ranges. [br/]
+
+    That is, a common model is to set *P(slip)* <= 0.1
     and *P(guess)* <= 0.3 to make the mastery predictions more realistic. What this
-    does, mathematically, is to minimize the sum-of-squares residual:[br/]
-    [img
-       src:`"static/images/eq.png"`
-       width: "200px"
-     /]
+    does, mathematically, is to minimize the sum-of-squares residual.
   [/Step]
 
   [Step state:"initial"]
@@ -79,10 +79,13 @@
 
   [Step state:"all"]
   Continuing with the notion of "conditional probability," the mastery of a current
-  state also depends on the mastery of a previous state. This is a "Markov chain",
-  so the mastery of the most recent state is both dependent on the previous
-  immediate state (more significantly) and the first state (less significantly). Note
-  that this means even, when a learner gets everything wrong, the mastery still
+  state also depends on the mastery of a previous state. [br/]
+
+  This is a "Markov chain", so the mastery of the most recent state is both
+  dependent on the previous immediate state (more significantly) and the
+  first state (less significantly). [br/]
+
+  Note that this means even, when a learner gets everything wrong, the mastery still
   increases, albeit by a little bit.
   [/Step]
 

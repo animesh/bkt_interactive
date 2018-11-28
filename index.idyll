@@ -18,7 +18,9 @@
   [Step state:"static"]
   Bayesian knowledge tracing (BKT) is an AI algorithm
   used in intelligent tutoring systems to model a learner's
-  mastery of the skill being taught. Let us first consider this algorithm
+  mastery of the skill being taught. [br/]
+
+  Let us first consider this algorithm
   (BKT) in the context of an "alchemy" metaphor. Think of the large beaker
   as representative of the overall mastery of the student for the one skill of interest.
   The test tubes are representative of the factors that go into
@@ -31,7 +33,18 @@
   1) **init** : probability of learner knowing the skill beforehand [br/]
   2) **transit** : probability of learner learning the skill after application[br/]
   3) **slip** : probability of learner messing up when using a known skill[br/]
-  4) **guess** : probability of learner has a lucky guess[br/]
+  4) **guess** : probability of learner has a lucky guess[br/][br/]
+  The probabilities of these parameters ultimately affect mastery, which is the
+  probability that a particular skill has been learned:[br/]
+  [var name:"Init" value:"low" /]
+  Init: [Select value:Init options:`["low", "high"]`  /]
+  [var name:"Transit" value:"low" /]
+  Transit: [Select value:Transit options:`["low", "high"]`  /]
+  [var name:"Slip" value:"low" /]
+  Slip: [Select value:Slip options:`["low", "high"]`  /]
+  [var name:"Guess" value:"low" /]
+  Guess: [Select value:Guess options:`["low", "high"]`  /][br/]
+  Mastery:
   [/Step]
 
   [Step state:"cali"]
@@ -48,7 +61,9 @@
   Transit: [Dynamic value:p_t min:0 max: p_t_range step:0.01/]
   Slip: [Dynamic value:p_s min:0 max: 0.1 step:0.01/]
   Guess: [Dynamic value:p_g min:0 max: 0.3 step:0.01/][br/]
+  Total probability: [Display value:`p_i+p_t+p_s+p_g` /][br/]
 
+  [br/]
   *P(slip)* <= 0.1 and *P(guess)* <= 0.3 to make realistic predictions[br/]
   When fitting parameters, we choose combinations that give the best sum-of-squares residual
   [/Step]
@@ -56,9 +71,14 @@
   [Step state:"initial"]
   Before taking the actual evaluation (or after pre-test), the probability
   of a student mastering the skill is equal to the *init* probability:[br/]
-  [Equation]
-  p(L_1) = p(L_0)
-  [/Equation][br/][br/]
+  [img
+     src:`"static/images/eq1.png"`
+     width: "150px"
+   /]
+  //[Equation]
+  //p(L_1)^k = p(L_0)^k
+  //[/Equation]
+  [br/][br/]
   [Particles size:`init/100` /]
   Try assigning values to the *init* variable:[br/]
   [var name:"init" value:5 /]
@@ -84,15 +104,23 @@
   [/Button]
   [Conditional if:` correctness_toggle==true `]
     [var name:"progress" value:"80%" /]
-    [Equation]
-    p(L_{t+1}|obs=correct) = \frac{p(L_t) \cdot (1-p(S))}{p(L_t) \cdot (1-p(S)) + (1-p(L_t)) \cdot p(G)}
-    [/Equation][br/]
-    * animation to display large growth *
+    [img
+       src:`"static/images/eq2correct.png"`
+       width: "420px"
+     /]
+    //[Equation]
+    //p(L_{t+1}|obs=correct)^k = \frac{p(L_t)^k \cdot (1-p(S)^k)}{p(L_t)^k \cdot (1-p(S)^k) + (1-p(L_t)^k) \cdot p(G)^k}
+    //[/Equation]
+    [br/]
   [/Conditional]
   [Conditional if:` correctness_toggle==false `]
-    [Equation]
-    p(L_{t+1}|obs=wrong) = \frac{p(L_t) \cdot p(S)}{p(L_t) \cdot p(S) + (1-p(L_t)) \cdot (1-p(G))}
-    [/Equation][br/]
+    [img
+       src:`"static/images/eq2wrong.png"`
+       width: "420px"
+     /]
+    //[Equation]
+    //p(L_{t+1}|obs=wrong)^k = \frac{p(L_t)^k \cdot p(S)^k}{p(L_t)^k \cdot p(S)^k + (1-p(L_t)^k) \cdot (1-p(G)^k)}
+    //[/Equation][br/]
   [/Conditional]
   [/Step]
 
@@ -154,7 +182,7 @@
   x-axis: next x questions[br/]
   y-axis: percentage increase[br/][br/]
   *Note that even when a learner gets everything wrong, the mastery still
-  increases, albeit by a little bits*
+  increases, albeit by a little bit*
   [/Step]
 
 
@@ -169,7 +197,9 @@
   The skill is [Display value:`mastered ? "mastered!" : "unmastered"  `/]
 
   [Conditional if:` mastered `]
-  Congrats on finishing the explainable![br/] Your access code is 66666.
+  Congrats on finishing the explainable![br/]
+  [link text:"Click here" url:"https://some.url" /] to continue on to the next step
+
   [/Conditional]
   [/Step]
 
