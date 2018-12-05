@@ -37,9 +37,8 @@
   The probabilities of these parameters ultimately affect mastery, which is the
   probability that a particular skill has been learned.
   [/Step]
-  [/Step]
 
-    [Step state:"cali"]
+  [Step state:"cali"]
     The weights these parameters carry in the equation are determined by
     the person applying the algorithm.[br/][br/]
     As we are dealing with probabilities, this person can set each parameter
@@ -105,7 +104,7 @@
   skill is mastered!
 
   Congrats on finishing the explainable![br/]
-  [link text:"Click here" url:"https://some.url" /] to continue on to the next step
+  [link text:"Click here" url:"https://docs.google.com/forms/d/e/1FAIpQLScYlrd2kOIguBlTpeZwUGfQ4mYKp_U8qB5mnoqpE1KDuNln6A/viewform" /] to continue on to the next step
 
   [/Step]
 
