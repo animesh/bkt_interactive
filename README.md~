@@ -1,10 +1,10 @@
 # Bayesian Knowledge Tracing Explainable
 
-Bayesian Knowledge Tracing (BKT) is a ML algorithm used in many intelligent tutoring systems to model a student's "mastery" of a particular skill with a series of questions. While many learners rely on this algorithm to accurately model their learning, most do not actually understand how BKT works. The goal of this project is to convey this information to potential users, comparing both interactive and static (reading through text summaries) approaches, through a web-based scrollable "explainable." We will then assess how each technique affects comprehension and sentiments (fairness, trust). 
+Bayesian Knowledge Tracing (BKT) is a ML algorithm used in many intelligent tutoring systems to model a student's "mastery" of a particular skill, given a series of questions. While many learners rely on this algorithm to give an accurate prediction of their current learning, however, most do not actually understand how BKT works. The goal of this project is to convey this information to potential users, comparing both interactive and static (reading through text summaries) approaches, through a web-based scrollable "explainable." We will then assess the effectiveness of each technique and the overall sentiments (fairness, trust) users may express now that the algorithm has become more transparent. 
 
 ## Methodology 
 
-We will perform our study on Mechanical Turk, randomly providing a link to either version of the explainables and using the survey as our primary method for both pre-test and post-test. For our explainble, we aim to teach the following tasks, as categorized by the Cognitive Process Dimension, a modified version of Bloom's Taxonomy:
+We will perform our study with Mechanical Turk users, using the survey as our primary method for both pre-test and post-test. For our explainble, we aim to teach the following tasks, as categorized by the Cognitive Process Dimension, a modified version of Bloom's Taxonomy:
 1. Recall what BKT stands for.
 2. Explain the context in which BKT is used. 
 3. List the 4 parameters used in the algorithm and be able to explain what each means:
@@ -26,7 +26,6 @@ Conceptual | 2, 3 | 4 | | | 8 | 12
 Procedural | | 10 | 6 | 7 | | 13
 Meta-cognitive | | | | 9 | | |
 
-For our survey, we aim to measure how effectively the explainable enhances users' understanding of the knowledge components covered by the explainable. In the survey, we follow the framework provided by Min Kyung Lee to measure fairness, trust, and emotion and the one provided by Poursabzi-Sangdeh to measure model intrepretability.
 
 ## Running on local host
 
